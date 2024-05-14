@@ -10,7 +10,6 @@ const Home = (props: any) => {
   useEffect(() => {
     if (props.token) {
       setInitialValue(props.token, props.shortTermToken);
-      console.log(props);
       router.replace("/project");
     }
   }, [props]);
@@ -22,17 +21,16 @@ const Home = (props: any) => {
 };
 
 export async function getServerSideProps() {
-  const URL = "http://192.168.0.89:8888/api/authenticate";
+  const URL = `http://${process.env.BASE_URL}/authenticate`;
   const res = await fetch(URL, {
     method: "POST",
     headers: {
       "Content-type": "application/json",
     },
-    body: JSON.stringify({ username: "coding_test", password: "coding0000" }),
+    body: JSON.stringify({ username: process.env.USERNAME, password: process.env.PASSWORD }),
   });
   const data = await res.json();
 
-  console.log("le", data);
   return { props: { ...data } };
 }
 
